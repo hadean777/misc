@@ -1,0 +1,1 @@
+mvn eclipse:eclipse -DownloadJavadocs=true -DownloadSources=true -Dwtpversion=1.5

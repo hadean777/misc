@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+	<context:annotation-config/>
+	<context:component-scan base-package="com.hadean777.misc.webapp.controller"/>
+	<context:component-scan base-package="com.hadean777.misc.manager"/>
+	<context:component-scan base-package="com.hadean777.misc.manager.impl"/>
+	<context:component-scan base-package="com.hadean777.misc.persistence"/>
+	<context:component-scan base-package="com.hadean777.misc.persistence.dao.impl"/>
+	<mvc:annotation-driven/>
+	
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreResourceNotFound" value="false"/>
+        <property name="location" value="classpath:misc.properties"/>
+        <property name="nullValue" value="null"/>
+    </bean>
+	
+	<bean id="rsrcBundleViewResolver" class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+		<property name="basename" value="views"/>
+		<property name="order" value="1"/>
+	</bean>
+
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename"><value>classpath:messages</value></property>
+		<property name="fileEncodings" value="UTF-8" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+
+	<bean id="loggingAdvice" class="com.hadean777.misc.advice.LoggingAdvice">
+		<property name="order" value="1"></property>
+	</bean>
+	
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	    <property name="defaultEncoding" value="utf-8"/>
+	</bean>
+	
+	<import resource="security-context.xml"/>
+	<import resource="data-access-context.xml"/>
+
+</beans>

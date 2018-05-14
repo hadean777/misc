@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+	<bean id="customAuthManager" class="com.hadean777.misc.auth.AppAuthManager"/>
+	
+	<security:http auto-config="true" authentication-manager-ref="customAuthManager">
+		<security:intercept-url pattern="/common/*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+		<security:intercept-url pattern="/css/*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+		<security:intercept-url pattern="/images/*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+		<security:intercept-url pattern="/secure/common/*" access="IS_AUTHENTICATED_FULLY"/>
+		<security:form-login login-page="/common/loginPage.do" 
+			authentication-failure-url="/common/loginPage.do?auth=failed"
+			default-target-url="/secure/common/welcomeUser.do" always-use-default-target="true"/>
+	</security:http>
+		
+		
+</beans>

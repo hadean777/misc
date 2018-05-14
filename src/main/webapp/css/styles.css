@@ -1,0 +1,13 @@
+footer {
+  border-top: 1px solid #d2d3d6;
+  background: #edeef0;
+  height: 30px;
+  margin-top: -30px;
+  overflow: hidden;
+}
+
+footer > div.clearfix{
+  margin: 6px 20px 0;
+  font-size: 12px;
+  color: #4d4d4d;
+}
