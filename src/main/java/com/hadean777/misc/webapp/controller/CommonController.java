@@ -32,10 +32,18 @@ public class CommonController {
 	@RequestMapping(value = "/common/mainPage.do", method = RequestMethod.POST)
 	public ModelAndView getMainPageWithResults(@RequestParam String sha512) {
 
-		String sha512res = hashManager.getSHA512(sha512);
+		//String sha512res = hashManager.getSHA512(sha512);
+		long startSeconds = System.currentTimeMillis()/1000;
 
+		String sha512res = hashManager.proofOfWork512(sha512, 4);
 
-		return new ModelAndView("main", "sha512res", sha512res);
+		long endSeconds = System.currentTimeMillis()/1000;
+
+		Long totalTime = endSeconds - startSeconds;
+
+		String result = "Time: " + totalTime + " Input: " + sha512 + " Result: " + sha512res;
+
+		return new ModelAndView("main", "sha512res", result);
 	}
 
 	@RequestMapping("/secure/common/screenLayout.do")	
