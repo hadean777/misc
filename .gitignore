@@ -48,5 +48,5 @@ build/
 .classpath
 .project
 .gitignore
-.iml
+*.iml
 misc.properties
