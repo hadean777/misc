@@ -11,6 +11,7 @@ public class AppConstants {
 
 	public final static String MANAGER_BEAN_NAVIG_MANAGER = "navigManager";
     public final static String MANAGER_BEAN_HASH_MANAGER = "hashManager";
+    public final static String MANAGER_BEAN_RANDOM_MANAGER = "randomManager";
 	
     public final static String MSG_KEY_ERROR_PARAMS_NULL = "error.params.null";
     public final static String MSG_KEY_ERROR_LOG = "common.error.log";

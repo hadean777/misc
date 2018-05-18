@@ -2,6 +2,7 @@ package com.hadean777.misc.webapp.controller;
 
 import com.hadean777.misc.AppConstants;
 import com.hadean777.misc.manager.HashManager;
+import com.hadean777.misc.manager.RandomManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,10 @@ public class CommonController {
 	@Autowired
 	@Qualifier(AppConstants.MANAGER_BEAN_HASH_MANAGER)
 	private HashManager hashManager;
+
+	@Autowired
+	@Qualifier(AppConstants.MANAGER_BEAN_RANDOM_MANAGER)
+	private RandomManager randomManager;
 	
 	@RequestMapping("/common/loginPage.do")
 	public String goToLoginPage() {
@@ -35,13 +40,15 @@ public class CommonController {
 		//String sha512res = hashManager.getSHA512(sha512);
 		long startSeconds = System.currentTimeMillis()/1000;
 
-		String sha512res = hashManager.proofOfWork512(sha512, 4);
+		String sha512res = hashManager.proofOfWork512(sha512, 2);
 
 		long endSeconds = System.currentTimeMillis()/1000;
 
 		Long totalTime = endSeconds - startSeconds;
 
 		String result = "Time: " + totalTime + " Input: " + sha512 + " Result: " + sha512res;
+
+		randomManager.startSound();
 
 		return new ModelAndView("main", "sha512res", result);
 	}
