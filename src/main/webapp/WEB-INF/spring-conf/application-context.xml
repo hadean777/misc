@@ -13,6 +13,8 @@
 	<context:component-scan base-package="com.hadean777.misc.manager.impl"/>
 	<context:component-scan base-package="com.hadean777.misc.persistence"/>
 	<context:component-scan base-package="com.hadean777.misc.persistence.dao.impl"/>
+	<context:component-scan base-package="com.hadean777.misc.service"/>
+	<context:component-scan base-package="com.hadean777.misc.service.impl"/>
 	<mvc:annotation-driven/>
 	
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
