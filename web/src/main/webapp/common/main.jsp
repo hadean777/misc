@@ -11,6 +11,7 @@
     <input type="submit" value="Get SHA-512"><br>
 </form>
 <p>${sha512res}</p>
+<p>${nativeImg}</p>
 
 </body>
 </html>

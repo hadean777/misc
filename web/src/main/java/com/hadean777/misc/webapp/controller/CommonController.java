@@ -3,7 +3,9 @@ package com.hadean777.misc.webapp.controller;
 import com.hadean777.misc.AppConstants;
 import com.hadean777.misc.manager.HashManager;
 import com.hadean777.misc.manager.RandomManager;
+import com.hadean777.misc.service.AudioService;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigInteger;
 import java.text.DecimalFormat;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Controller
@@ -27,7 +32,12 @@ public class CommonController {
 	@Autowired
 	@Qualifier(AppConstants.MANAGER_BEAN_RANDOM_MANAGER)
 	private RandomManager randomManager;
-	
+
+	@Autowired
+	@Qualifier(AppConstants.MANAGER_BEAN_AUDIO_SERVICE)
+	private AudioService audioService;
+
+
 	@RequestMapping("/common/loginPage.do")
 	public String goToLoginPage() {
 		return "login";
@@ -41,39 +51,52 @@ public class CommonController {
 	@RequestMapping(value = "/common/mainPage.do", method = RequestMethod.POST)
 	public ModelAndView getMainPageWithResults(@RequestParam String sha512) {
 
-		String sha512res = hashManager.getSHA512(sha512);
+		byte[] sourceText = null;
+		Double sourceEntropy = 0.0;
+		Double binSource = 0.0;
+
+		if (StringUtils.isNotBlank(sha512)) {
+			sourceText = sha512.getBytes();
+			sourceEntropy = randomManager.countEntropy(sourceText);
+			binSource = randomManager.binaryTest(sourceText);
+		}
+
+		//String sha512res = hashManager.getSHA512(sha512);
 		long startSeconds = System.currentTimeMillis()/1000;
 
 //		String sha512res = hashManager.proofOfWork512(sha512, 2);
 //		String sha512res = String.format("%040x", new BigInteger(1, randomManager.getRandomHash512()));
 
-		int N = 20;
-		byte[] nativeArray = randomManager.getRandomNumbersNative();
-		byte[] audioArray = randomManager.getRandomHash512();
+		int x = 512;
+		int y = 512;
 
-		byte[] nativeHash = hashManager.getSHA512(nativeArray);
+		int N = x*y/64;
+		byte[] nativeArray = randomManager.getRandomNumbersNative();
+//		byte[] audioArray = randomManager.getRandomHash512();
+
+		//byte[] nativeHash = hashManager.getSHA512(nativeArray);
 
 		for (int i = 1; i < N; i++) {
 			byte[] native2 = randomManager.getRandomNumbersNative();
 			nativeArray = ArrayUtils.addAll(nativeArray, native2);
-			audioArray = ArrayUtils.addAll(audioArray, randomManager.getRandomHash512());
-			nativeHash = ArrayUtils.addAll(nativeHash, hashManager.getSHA512(native2));
+//			audioArray = ArrayUtils.addAll(audioArray, randomManager.getRandomHash512());
+			//nativeHash = ArrayUtils.addAll(nativeHash, hashManager.getSHA512(native2));
 		}
 
+		String nativeImage = Base64.getEncoder().encodeToString(nativeArray);
 
-
-		Double nativeHashEntropy = randomManager.countEntropy(nativeHash);
+		//Double nativeHashEntropy = randomManager.countEntropy(nativeHash);
 
 		Double nativeEntropy = randomManager.countEntropy(nativeArray);
-		Double audioEntropy = randomManager.countEntropy(audioArray);
+//		Double audioEntropy = randomManager.countEntropy(audioArray);
 
 		String nativeRand = String.format("%040x", new BigInteger(1, nativeArray));
-		String nativeRandHash = String.format("%040x", new BigInteger(1, nativeHash));
-		String audioRand = String.format("%040x", new BigInteger(1, audioArray));
+		//String nativeRandHash = String.format("%040x", new BigInteger(1, nativeHash));
+//		String audioRand = String.format("%040x", new BigInteger(1, audioArray));
 
 		double binNative = randomManager.binaryTest(nativeArray);
-		double binAudio = randomManager.binaryTest(audioArray);
-		double binHash = randomManager.binaryTest(nativeHash);
+//		double binAudio = randomManager.binaryTest(audioArray);
+		//double binHash = randomManager.binaryTest(nativeHash);
 
 		long endSeconds = System.currentTimeMillis()/1000;
 
@@ -84,17 +107,24 @@ public class CommonController {
 		//randomManager.startSound();
 		DecimalFormat df = new DecimalFormat("#.################################################");
 		DecimalFormat dfEn = new DecimalFormat("#.###############");
-		String result = "Time: " + totalTime + " N = " + N +
+		String resultStr = "Time: " + totalTime + " N = " + N +
 				"<br> Native Entropy:      " + dfEn.format(nativeEntropy) + " bin: " + df.format(binNative) +
-				"<br> Native Hash Entropy: " + dfEn.format(nativeHashEntropy) + " bin: " + df.format(binHash) +
-				"<br> Audio Entropy:       " + dfEn.format(audioEntropy) + " bin: " + df.format(binAudio);
+				//"<br> Native Hash Entropy: " + dfEn.format(nativeHashEntropy) + " bin: " + df.format(binHash) +
+	//			"<br> Audio Entropy:       " + dfEn.format(audioEntropy) + " bin: " + df.format(binAudio) +
+				"<br> Source Entropy:      " + dfEn.format(sourceEntropy) + " bin: " + df.format(binSource) +
+				"<br> <br> <br> Text: " + sha512;
 
 //		String result = "Time: " + totalTime +
 //				"<br> Native Entropy: 		" + nativeEntropy + " Value: " + nativeRand +
 //				"<br> Native Hash Entropy: 	" + nativeHashEntropy + " Value: " + nativeRandHash +
 //				"<br> Audio Entropy: 		" + audioEntropy + " Value: " + audioRand;
 
-		return new ModelAndView("main", "sha512res", result);
+		Map<String, Object> model = new HashMap<>();
+		model.put("sha512res", resultStr);
+		model.put("nativeImg", nativeImage);
+		//audioService.sampleSound();
+		//return new ModelAndView("main", "sha512res", resultStr);
+		return new ModelAndView("main", model);
 	}
 
 	@RequestMapping("/secure/common/screenLayout.do")	

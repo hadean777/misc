@@ -6,4 +6,6 @@ public interface AudioService {
 
     byte[] getSoundData();
 
+    void sampleSound();
+
 }
