@@ -1,5 +1,7 @@
 package pi_count;
 
+import java.math.BigDecimal;
+
 public class Main {
 	
 	//Euler number:
@@ -16,9 +18,11 @@ public class Main {
 		
 		//double fractFromN = 0.00000000000000000000000d;
 		
-		long n = 8; //number of binary digit we are searching
+		long N = 8; //number of binary digit we are searching
+
+		long n = N;
 		
-		long inf = 10; // precision (instead of infinity)
+		long inf = 20; // precision (instead of infinity)
 		
 		byte nDigit = getLog2Ndigit(n, inf);
 
@@ -29,13 +33,18 @@ public class Main {
 	
 	private static byte getLog2Ndigit(long n, long inf) {
 		byte result = 0;
-		
+
 		double fractFromN = 0.00000000000000000000000d;
-		
-		fractFromN = countModSum(1, n);
+
+		fractFromN = countModSum(1, n) % 1;
 		System.out.println("Fract Result 1 = " + fractFromN);
-		System.out.println();
-		fractFromN = (fractFromN + countSum(n, inf)) % 1;
+
+
+
+		//String binStr = Long.toBinaryString(Double.doubleToLongBits(fractFromN));
+//		System.out.println(binStr);
+//		System.out.println(binStr.substring(11));
+		fractFromN = (fractFromN + countSum(n+1, inf)) % 1;
 		System.out.println("Fract Result 2 = " + fractFromN);
 		System.out.println();
 		return result;
@@ -45,7 +54,9 @@ public class Main {
 		double result = 0;
 		for (long i = k; i <= n; i++) {
 			result = result + (((double) twoPow(n - k) / (double) i) % 1) ;
+			//result = result + ((double) twoPow(n - k) / (double) i);
 		}
+		result = result % 1;
 		System.out.println("k= " + k);
 		System.out.println("n= " + n);
 		System.out.println("sumRes= " + result);
@@ -57,15 +68,17 @@ public class Main {
 		double result = 0;
 		for (long i = k; i <= n; i++) {
 			result = result + ((modNumerator(i, n) / (double) i) % 1) ;
+			//result = result + (modNumerator(i, n) / (double) i);
 		}
 		System.out.println("k= " + k);
 		System.out.println("n= " + n);
 		System.out.println("modSumRes= " + result);
 		System.out.println();
+		//result = result % 1;
 		return result;
 	}
 
-	//TODO: should be optimized with "binary algorithm for exponentiation"
+
 	private static double modNumerator(long k, long n) {
 		double result = 0;
 		
@@ -86,5 +99,5 @@ public class Main {
 		}
 		return result;
 	}
-	
+
 }
