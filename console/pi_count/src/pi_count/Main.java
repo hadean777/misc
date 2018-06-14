@@ -14,15 +14,18 @@ public class Main {
 	public final static String LOG2_MODEL_STR = "0101100010111001"; 
 	public final static byte[] LOG2_MODEL_BIN = {0,1,0,1,1,0,0,0,1,0,1,1,1,0,0,1};
 	
+	
+	public final static int PRECISION = 8;
+	
 	public static void main(String[] args) {
 		
 		//double fractFromN = 0.00000000000000000000000d;
 		
-		long N = 8; //number of binary digit we are searching
+		long N = 7; //number of binary digit we are searching
 
 		long n = N;
 		
-		long inf = 20; // precision (instead of infinity)
+		long inf = 5000; // precision (instead of infinity)
 		
 		byte nDigit = getLog2Ndigit(n, inf);
 
@@ -39,7 +42,7 @@ public class Main {
 		fractFromN = countModSum(1, n) % 1;
 		System.out.println("Fract Result 1 = " + fractFromN);
 
-
+		getBinaryFract(fractFromN);
 
 		//String binStr = Long.toBinaryString(Double.doubleToLongBits(fractFromN));
 //		System.out.println(binStr);
@@ -97,6 +100,28 @@ public class Main {
 		for (long i = 1; i <= n; i++) {
 			result = result * 2;
 		}
+		return result;
+	}
+	
+	
+	
+	////////////////////////////////////
+	private static String getBinaryFract(Double x) {
+		String result = "";
+		
+		//final int precision = 8;
+		
+		String decimalStr = x.toString();
+		String heximalStr = Double.toHexString(x);
+		System.out.println("DEC: " + decimalStr);
+		System.out.println("HEX: " + heximalStr);
+		
+		String decimalFract = decimalStr.substring(2, 2 + PRECISION);
+		System.out.println("decimalFract: " + decimalFract);
+		System.out.println();
+		
+		
+		
 		return result;
 	}
 
