@@ -120,7 +120,12 @@ public class Main {
 		System.out.println("decimalFract: " + decimalFract);
 		System.out.println();
 		
-		
+		byte[] decimalBytes = new byte[PRECISION];
+		for (int i = 0; i < decimalFract.length(); i++) {
+			decimalBytes[i] = Byte.parseByte(String.valueOf(decimalFract.charAt(i)));
+			//decimalBytes[i] = (byte) decimalFract.charAt(i);
+			System.out.println(decimalBytes[i]);
+		}
 		
 		return result;
 	}
