@@ -2,6 +2,8 @@ package log2count;
 
 import java.util.Date;
 
+import model.SimpleOffset;
+
 public class Main {
 	
 	//Euler number:
@@ -25,53 +27,21 @@ public class Main {
 		
 		byte[] initialSequence = getInitialSequence();
 		
-		int sequenceBitLength = initialSequence.length * 8;
+		SimpleOffset seqOffset = Log2seq.findSequenceInLog2(initialSequence);
 		
-//		for (long n = 0; n <= sequenceBitLength; n++) {
-//			byte nDigit = Log2count.getLog2Ndigit(n);
-//			System.out.print(nDigit);
+		String restoredSequence = restoreSequenceFromLog2(seqOffset);
+		
+		
+		////// Output
+		System.out.println("Initial:  " + seqOffset.getInitSeq());
+//		for (int i = 0; i < initialSequence.length; i++) {
+//			System.out.print(initialSequence[i]);
 //		}
-		System.out.println();
-		Date startTime = new Date();
-		long longStart = startTime.getTime() / 1000;
-		System.out.println("Starting...");
-		System.out.println("Start Time: " + startTime + "Long(sec): " + longStart);
-		System.out.println("sequenceBitLength: " + sequenceBitLength);
-		System.out.println();
-		boolean[] initBoolSeq = convertToBoolArray(initialSequence);
-		
-		boolean searching = true;
-		int localCount = 0;
-		long globalCount = 0;
-		int maxResult = 0;
-		while (searching) {
-			boolean nDigit = Log2count.getBoolLog2Ndigit(globalCount);
-			//if bits are equals
-			if (!(nDigit^initBoolSeq[localCount])) {
-				localCount++;
-			} else {
-				if (localCount > maxResult) {
-					maxResult = localCount;
-					System.out.println("Global: " + globalCount + " Max: " + maxResult);
-					localCount = 0;
-				}
-			}
-			if (localCount >= sequenceBitLength) {
-				searching = false;
-			}
-			globalCount++;
-		}
-		
-		long offset = globalCount - sequenceBitLength;
-		System.out.println("Global: " + globalCount + " Offset: " + offset);
-		System.out.println();
-		Date finishTime = new Date();
-		long longFinish = finishTime.getTime() / 1000;
-		System.out.println("Completed");
-		System.out.println("Finish Time: " + finishTime + "Long(sec): " + longFinish);
-		long totalTime = longFinish - longStart;
-		System.out.println("Total time (sec): " + totalTime);
-		
+		//System.out.println();
+		System.out.println("Restored: " + restoredSequence);
+//		for (int i = 0; i < restoredSequence.length; i++) {
+//			System.out.print(restoredSequence[i]);
+//		}
 	}
 	
 	//TODO: should be implemented load from file
@@ -79,33 +49,72 @@ public class Main {
 		
 		//For sequence 6guRczu8eUwBKtWq offset=9097
 
-		String sampleSequence = "6guRczu8eUwBKtWq!";
+		String sampleSequence = "63";
 		
 		System.out.println("Sequence: " + sampleSequence);
 		byte[] result = sampleSequence.getBytes();
 		return result;
 	}
 	
-	private static boolean[] convertToBoolArray(byte[] seq) {
-		int sequenceBitLength = seq.length * 8;
-		boolean[] result = new boolean[sequenceBitLength];
-		int bitCounter = 0;
-		for (int byteNum = 0; byteNum < seq.length; byteNum++) {
-			byte currentByte = seq[byteNum];
-			String strByte = String.format("%8s", Integer.toBinaryString(currentByte & 0xFF)).replace(' ', '0');
-			for (int bitNum = 0; bitNum < 8; bitNum++) {
-				byte currentBit = Byte.parseByte(String.valueOf(strByte.charAt(bitNum)));
-				if (currentBit == 1) {
-					result[bitCounter] = true;
-				} else {
-					result[bitCounter] = false;
-				}
-				bitCounter++;
-			}
-		}
+	public static String restoreSequenceFromLog2(SimpleOffset seqOffset) {
 		
-		return result;
+		System.out.println();
+		Date startTime = new Date();
+		long longStart = startTime.getTime() / 1000;
+		System.out.println("Restoring sequence started");
+		System.out.println("Start Time: " + startTime + "Long(sec): " + longStart);
+		System.out.println();
+		
+		long initOffset = seqOffset.getOffset();
+		int bitLength = seqOffset.getBitLength();
+		long endOffset = initOffset + bitLength;
+		
+		System.out.println("initOffset = " + initOffset);
+		System.out.println("bitLength = " + bitLength);
+		System.out.println("endOffset = " + endOffset);
+		byte[] bits = new byte[bitLength];
+		int localCount = 0;
+		String result = "";
+		for(long globalCount = initOffset; globalCount < endOffset; globalCount++) {
+			//bits[localCount] = Log2count.getLog2Ndigit(globalCount);
+			boolean bit = Log2count.getBoolLog2Ndigit(globalCount);
+			if (bit) {
+				result += "1";
+			} else {
+				result += "0";
+			}
+			localCount++;
+		}
+		//byte[] result = encodeToByteArray(bits);
+		System.out.println();
+		Date finishTime = new Date();
+		long longFinish = finishTime.getTime() / 1000;
+		System.out.println("Restoring sequence completed");
+		System.out.println("Finish Time: " + finishTime + "Long(sec): " + longFinish);
+		long totalTime = longFinish - longStart;
+		System.out.println("Total time (sec): " + totalTime);
+		return result; 
 	}
 	
+	private static byte[] encodeToByteArray(byte[] bits) {
+        byte[] results = new byte[(bits.length + 7) / 8];
+        int byteValue = 0;
+        int index;
+        for (index = 0; index < bits.length; index++) {
+
+            byteValue = (byteValue << 1) | bits[index];
+
+            if (index %8 == 7) {
+                results[index / 8] = (byte) byteValue;
+            }
+        }
+
+        if (index % 8 != 0) {
+        	Integer bVal = byteValue << (8 - (index % 8));
+            results[index / 8] = bVal.byteValue();
+        }
+
+        return results;
+    }
 
 }
