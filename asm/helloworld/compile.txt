@@ -1,0 +1,13 @@
+/*---------- x32 -------------*/
+
+as --32 hw_my.s -o hw_my.o			#Or:gcc -m32 -c hw_my.s
+ld -melf_i386 -s hw_my.o -o hw_my
+
+
+
+
+
+
+/*----------- x64 -------------*/
+as --64 hw_x64.s -o hw.o			#Or:gcc -m64 -c hw_x64.s
+ld -melf_x86_64 -s hw.o -o hw
