@@ -1,0 +1,7 @@
+2018-06-20:
+
+From: https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/x64-architecture
+
+rax, rcx, rdx, r8-r11 are volatile.
+rbx, rbp, rdi, rsi, r12-r15 are nonvolatile.
+

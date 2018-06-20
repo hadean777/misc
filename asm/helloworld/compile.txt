@@ -1,13 +1,25 @@
 /*---------- x32 -------------*/
 
-as --32 hw_my.s -o hw_my.o			#Or:gcc -m32 -c hw_my.s
+as --32 hw_my.s -o hw_my.o			#Or: gcc -m32 -c hw_my.s
 ld -melf_i386 -s hw_my.o -o hw_my
 
+With debugger: gcc -g hw_my.s -o hw_my.o
 
 
 
 
 
 /*----------- x64 -------------*/
-as --64 hw_x64.s -o hw.o			#Or:gcc -m64 -c hw_x64.s
+as --64 hw_x64.s -o hw.o			#Or: gcc -m64 -c hw_x64.s
 ld -melf_x86_64 -s hw.o -o hw
+
+
+With debugger: gcc -gstabs+ -m64 2_hw_x64.s -o 2hw		#for debugging using main instead of _start
+
+
+
+/*---------- DEBUGGER ------------*/
+gdbtui ./2hw
+
+useful options:
+layout regs		-- show registers
