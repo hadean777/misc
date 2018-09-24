@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusableInTouchMode="true">
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:textAlignment="gravity"
+        android:background="#2a093c"
+        app:itemTextColor="@color/drawerText"
+        app:itemIconTint="@color/drawerIcons"
+        app:headerLayout="@layout/navigation_header"
+        >
+
+
+        <!--android.support.design.widget.NavigationView
+            android:id="@+id/navigation_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:textAlignment="gravity"
+            android:background="#2a093c"
+            app:itemTextColor="@color/drawerText"
+            app:itemIconTint="@color/drawerIcons"
+            app:headerLayout="@layout/navigation_header"
+            -->
+
+        <!--ImageView
+            android:id="@+id/imageview_nav_illustration"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/drawer_illustration"
+            /-->
+
+        <GridView
+            android:id="@+id/grid_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/nav_header_bottom"
+            android:numColumns="2"
+            android:visibility="gone"
+            />
+
+    </android.support.design.widget.NavigationView>
+
+    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:background="@color/mainBackground"
+        tools:context="com.hadean777.horo.ui.activity.MainActivity">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar"
+            >
+
+        </include>
+
+        <TextView
+            android:id="@+id/textview_total"
+            android:layout_marginTop="90dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/mainText"
+            android:text="Часы общие:" />
+
+        <EditText
+            android:id="@+id/input_total"
+            android:maxLines="1"
+            android:inputType="numberDecimal"
+            android:layout_marginTop="110dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textview_overtime"
+            android:layout_marginTop="160dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/mainText"
+            android:text="Переработка:" />
+
+        <EditText
+            android:id="@+id/input_overtime"
+            android:maxLines="1"
+            android:inputType="numberDecimal"
+            android:layout_marginTop="180dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textview_night"
+            android:layout_marginTop="230dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/mainText"
+            android:text="Ночные часы:" />
+
+        <EditText
+            android:id="@+id/input_night"
+            android:maxLines="1"
+            android:inputType="numberDecimal"
+            android:layout_marginTop="250dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textview_tariff"
+            android:layout_marginTop="300dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/mainText"
+            android:text="Тариф:" />
+
+        <EditText
+            android:id="@+id/input_tariff"
+            android:maxLines="1"
+            android:inputType="numberDecimal"
+            android:layout_marginTop="320dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/button_id"
+            android:background="@color/colorPrimary"
+            android:layout_marginTop="380dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Считать" />
+
+        <TextView
+            android:id="@+id/textview_dirty"
+            android:layout_marginTop="440dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/mainText"
+            android:text="Dirty" />
+
+        <TextView
+            android:id="@+id/textview_clean"
+            android:layout_marginTop="460dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/mainText"
+            android:text="Clean" />
+
+
+    </RelativeLayout>
+
+
+
+</android.support.v4.widget.DrawerLayout>
