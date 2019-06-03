@@ -68,6 +68,13 @@ public class RandomManagerImpl implements RandomManager {
         }
     }
 
+    public byte[] getAudioBytes() {
+        byte[] targetData = audioService.getSoundData();
+
+        byte[] byteData = convertBitsToBytes(targetData);
+
+        return byteData;
+    }
 
     public byte[] getRandomHash512() {
 
@@ -75,9 +82,8 @@ public class RandomManagerImpl implements RandomManager {
 //
 //        DataLine.Info targetInfo = new DataLine.Info(TargetDataLine.class, format);
 //        //DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class, format);
-        byte[] targetData = audioService.getSoundData();
 
-        byte[] hash = hashManager.getSHA512(targetData);
+        byte[] hash = hashManager.getSHA512(getAudioBytes());
 
 //        try {
 //            TargetDataLine targetLine = (TargetDataLine) AudioSystem.getLine(targetInfo);
@@ -110,11 +116,13 @@ public class RandomManagerImpl implements RandomManager {
     }
 
     public byte[] getRandomNumbersNative() {
-        byte[] array = new byte[64];
+        //final int RANDOM_SIZE = 64;
+        final int RANDOM_SIZE = 5512;
+        byte[] array = new byte[RANDOM_SIZE];
 
         Random rand = new Random();
 
-        for (int i = 0; i < 64; i++) {
+        for (int i = 0; i < RANDOM_SIZE; i++) {
             Integer randInt = rand.nextInt(255);
             array[i] = randInt.byteValue();
         }
@@ -177,6 +185,47 @@ public class RandomManagerImpl implements RandomManager {
         return result;
     }
 
+    public byte[] convertBitsToBytes(byte[] input) {
 
+        byte[] result = null;
+
+        if (input != null) {
+
+            int inputBufferSize = input.length;
+            int outputBufferSize = inputBufferSize / 8;
+            if (outputBufferSize > 0) {
+                result = new byte[outputBufferSize];
+                int currentOffset = 0;
+                for (int i = 0; i < outputBufferSize; i++){
+                    byte resultByte = 0;
+                    for (int j = 0; j < 8; j++) {
+                        if (input[currentOffset] != 0) {
+                            if (j == 0) {
+                                resultByte += 128;
+                            } else if (j == 1) {
+                                resultByte += 64;
+                            } else if (j == 2) {
+                                resultByte += 32;
+                            } else if (j == 3) {
+                                resultByte += 16;
+                            } else if (j == 4) {
+                                resultByte += 8;
+                            } else if (j == 5) {
+                                resultByte += 4;
+                            } else if (j == 6) {
+                                resultByte += 2;
+                            } else if (j == 7) {
+                                resultByte += 1;
+                            }
+                        }
+                        currentOffset++;
+                    }
+                    result[i] = resultByte;
+                }
+            }
+        }
+
+        return result;
+    }
 
 }

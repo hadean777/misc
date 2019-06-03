@@ -5,6 +5,8 @@ public interface RandomManager {
 
     void startSound();
 
+    byte[] getAudioBytes();
+
     byte[] getRandomHash512();
 
     byte[] getRandomNumbersNative();

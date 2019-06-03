@@ -28,7 +28,7 @@ public class AudioServiceImpl implements AudioService {
     }
 
     public byte[] getSoundData() {
-        byte[] targetData = new byte[targetLine.getBufferSize() / 5];
+        byte[] targetData = new byte[targetLine.getBufferSize()];
 
         targetLine.read(targetData, 0, targetData.length);
 
