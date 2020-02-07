@@ -1,0 +1,5 @@
+Get line numbers in the log:
+cat -n server.log.2020-02-06 | grep ERROR >> err_lines.txt
+
+To grep log from linenum 1 to linenum 2:
+awk 'NR >= 20111000 && NR <= 20116000' server.log.2020-02-06 >> errors01.log 
