@@ -1,0 +1,6 @@
+On Debian/Ubuntu to disable password asking through GUI:
+
+edit /etc/xdg/autostart/gnome-keyring-ssh.desktop
+
+add:
+X-GNOME-Autostart-enabled=false
