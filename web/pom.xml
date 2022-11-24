@@ -14,7 +14,7 @@
 		<org.springframework.ldap.version>1.3.1.RELEASE</org.springframework.ldap.version>
         <org.slf4j-version>1.7.5</org.slf4j-version>
         <jackson.core-version>2.2.2</jackson.core-version>
-        <org.hibernate.version>4.3.6.Final</org.hibernate.version>
+        <org.hibernate.version>5.3.20.Final</org.hibernate.version>
         <maven.build.timestamp.format>yyyy/MM/dd HH:mm</maven.build.timestamp.format>
         <source.java.version>1.8</source.java.version>
         <target.java.version>1.8</target.java.version>
