@@ -15,13 +15,10 @@ import java.io.*;
 import java.math.BigInteger;
 import java.security.*;
 
-public class McElieceService {
-
-    private final static String KEY_PATH = "/home/crypto/data/";
+public class McElieceService extends CryptoService {
 
     private final static String PUBLIC_FILENAME = KEY_PATH + "mceliece_public.key";
     private final static String PRIVATE_FILENAME = KEY_PATH + "mceliece_private.key";
-    private final static String CHARSET = "UTF-8";
 
     public static void run() throws Exception {
         System.out.println("McElieceService started");
@@ -291,15 +288,5 @@ public class McElieceService {
         } catch (IOException | ClassCastException e) {
             throw new IOException("Error reading McEliece private key from file: " + e.getMessage(), e);
         }
-    }
-
-
-    // Utility method to convert bytes to hex string
-    private static String bytesToHex(byte[] bytes) {
-        StringBuilder result = new StringBuilder();
-        for (byte b : bytes) {
-            result.append(String.format("%02X", b));
-        }
-        return result.toString();
     }
 }
